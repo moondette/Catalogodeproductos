@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Catálogo de Productos</title>
+  <style>
+    :root {
+      --bg: #fdf6f9;
+      --card: #ffffff;
+      --primary: #d8a7c7;
+      --secondary: #a7c7d8;
+      --text: #444;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    header {
+      padding: 2rem;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2rem;
+    }
+
+    .search-box {
+      max-width: 400px;
+      margin: 1.5rem auto;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 0.8rem;
+      border-radius: 20px;
+      border: 1px solid #ddd;
+      outline: none;
+    }
+
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1.5rem;
+      padding: 2rem;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 1rem;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      transition: transform 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+    }
+
+    .card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 12px;
+    }
+
+    .card h3 {
+      margin: 0.7rem 0 0.3rem;
+      font-size: 1.1rem;
+    }
+
+    .price {
+      color: var(--primary);
+      font-weight: bold;
+    }
+
+    .stock {
+      font-size: 0.85rem;
+      margin: 0.3rem 0;
+    }
+
+    .btn {
+      display: block;
+      text-align: center;
+      margin-top: 0.8rem;
+      padding: 0.6rem;
+      border-radius: 20px;
+      text-decoration: none;
+      background: var(--secondary);
+      color: white;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Catálogo de Productos</h1>
+    <p>Encuentra lo que te gusta y pregúntanos por WhatsApp 💬</p>
+    <div class="search-box">
+      <input type="text" id="search" placeholder="Buscar producto..." />
+    </div>
+  </header>
+
+  <section class="products" id="productList"></section>
+
+  <script>
+    const products = [
+      {
+        name: "Aretes",
+        price: 250,
+        stock: 3,
+        image: "https://via.placeholder.com/300x200?text=Blusa",
+      },
+      {
+        name: "Labiales",
+        price: 120,
+        stock: 5,
+        image: "https://via.placeholder.com/300x200?text=Labial",
+      },
+      {
+        name: "Playera Beige",
+        price: 200,
+        stock: 2,
+        image: "https://via.placeholder.com/300x200?text=Playera",
+      }
+    ];
+
+    const list = document.getElementById('productList');
+    const search = document.getElementById('search');
+
+    function renderProducts(filter = "") {
+      list.innerHTML = "";
+      products
+        .sort((a, b) => a.name.localeCompare(b.name))
+        .filter(p => p.name.toLowerCase().includes(filter.toLowerCase()))
+        .forEach(product => {
+          const card = document.createElement('div');
+          card.className = 'card';
+          card.innerHTML = `
+            <img src="${product.image}" />
+            <h3>${product.name}</h3>
+            <div class="price">$${product.price}</div>
+            <div class="stock">Disponibles: ${product.stock}</div>
+            <a class="btn" target="_blank" href="https://wa.me/5213112499818?text=Hola,%20me%20interesa%20el%20producto%20${encodeURIComponent(product.name)}">
+              Preguntar por WhatsApp
+            </a>
+          `;
+          list.appendChild(card);
+        });
+    }
+
+    search.addEventListener('input', e => renderProducts(e.target.value));
+
+    renderProducts();
+  </script>
+</body>
+</html>
